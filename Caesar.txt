@@ -1,0 +1,93 @@
+
+/**
+ * Beschreiben Sie hier die Klasse Ascii.
+ * Wenn man das Projekt starten möchte, erstellt man eine neue Klasse von Caesar,
+ * dann kann man einen String mit "" angeben, welcher verschluesselt werden soll
+ * und einen Schluessel als int, wie weit der String verschoben werden soll.
+ * 
+ * @author Thœnie (Danny), Timelix (Tim Pauls), Lieyno (Leano)
+ * @version 1.0
+ */
+public class Caesar
+{
+    private int[] zahlen = {97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 
+    109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122}; //Ascii von klein a - z
+    
+    private char[] buchstaben = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
+    'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'}; //Ascii von klein a - z
+    
+    private int wert;   //Speichert wo die Buchstaben und Werte gespeichert sind
+    
+    public Caesar(String nachricht, int schluessel)
+    {
+        System.out.print('\u000C'); //Cleart die Konsole
+        verschluesseln(nachricht, schluessel);  //verschluesselt die Nachricht
+        entschluesseln(nachricht, schluessel);  //entschluesselt die Nachricht
+    }
+    
+    public void verschluesseln(String nachricht, int schluessel)
+    {
+        int zahlMitSchluessel;                        //Ascii Wert von der Nachricht + Schluessel
+        String neuerString = "";                     //neuer String der verschluesselt ist
+        char arr[] = new char[nachricht.length()];  //Array mit den einzelnen Buchstaben, um die Ascii Werte zu finden
+        
+        for (int i = 0; i < nachricht.length(); i++) {        //Jeder Buchstabe wird einzeln nach dem Wert gefragt und dieser erhöht
+            arr[i] = nachricht.charAt(i);                    //Nachricht wird Buchstabe für Buchstabe ins Array gespeichert 
+            buchstabeZuInt(arr[i]);                         //Der Ascii Wert von jedem Buchstaben rausfinden
+            zahlMitSchluessel = zahlen[wert] + schluessel; //Ascii Wert wird um den Schlüssel erhöht 
+            if(zahlMitSchluessel > 122)                     //122 ist das z, danach soll wieder die 97, das a kommen
+            {
+                zahlMitSchluessel = zahlen[wert] - 26 + schluessel;     //Daher -26 Buchstaben und dann den Schluessel draufrechnen 
+            }
+            intZuBuchstabe(zahlMitSchluessel);               //Der Ascii Wert mit Schluessel wird zu einem Buchstaben zurück gemacht
+            neuerString = neuerString + buchstaben[wert];   //die Buchstaben werden wieder zu einem String gemacht
+        }
+        System.out.println("Das verschluesselte Wort von " + nachricht + " mit dem Schlüssel " 
+        + schluessel + " lautet: " + neuerString);
+    }   
+    
+    public void entschluesseln(String nachricht, int schluessel)
+    {
+        int zahlMitSchluessel;                       //Ascii Wert von der Nachricht + Schluessel
+        String neuerString = "";                    //neuer String der entschluesselt ist
+        char arr[] = new char[nachricht.length()]; //Array mit den einzelnen Buchstaben, um die Ascii Werte zu finden
+        
+        for (int i = 0; i < nachricht.length(); i++) {          //Jeder Buchstabe wird einzeln nach dem Wert gefragt und dieser verkleinert
+            arr[i] = nachricht.charAt(i);                      //Nachricht wird Buchstabe für Buchstabe ins Array gespeichert
+            buchstabeZuInt(arr[i]);                           //Der Ascii Wert von jedem Buchstaben rausfinden
+            zahlMitSchluessel = zahlen[wert] - schluessel;   //Ascii Wert wird um den Schlüssel erhöht  
+            if(zahlMitSchluessel < 97)  //97 ist das a, danach soll wieder die 122, das z kommen
+            {
+                zahlMitSchluessel = zahlen[wert] + 26 - schluessel;  //Daher +26 Buchstaben und dann den Schluessel abziehen     
+            }  
+            intZuBuchstabe(zahlMitSchluessel);               //Der Ascii Wert mit Schluessel wird zu einem Buchstaben zurück gemacht
+            neuerString = neuerString + buchstaben[wert];   //die Buchstaben werden wieder zu einem String gemacht
+        }
+        System.out.println("Das entschluesselte Wort von " + nachricht + " mit dem Schlüssel " 
+        + schluessel + " lautet: " + neuerString);
+    }  
+    
+    public char intZuBuchstabe(int z)   //Um den Buchstaben von einem Ascii Wert rauszufinden
+    {
+        for(int i = 0; i < zahlen.length; i++)  //Alle Ascii Werte des Arrays werden durchlaufen
+        {
+            if(z == zahlen[i])  //Wenn Ascii Wert = dem Wert aus dem Array
+            {
+                wert = i;   //Variable Wert speichert die Stelle des Ascii Wertes
+            }
+        }
+        return buchstaben[wert];    //Die Stelle, wo der Buchstabe gespeichert ist wird ausgegeben
+    }
+    
+    public int buchstabeZuInt(char z)   //Um den Ascii Wert von einem Buchstaben rauszufinden
+    {
+        for(int i = 0; i < buchstaben.length; i++)  //Alle Buchstaben des Arrays werden durchlaufen
+        {
+            if(z == buchstaben[i])  //Wenn Buchstabe = dem Wert aus dem Array
+            {
+                wert = i;   //Variable Wert speichert die Stelle des Buchstaben
+            }
+        }
+        return zahlen[wert];    //Die Stelle, wo der Buchstabe gespeichert ist wird ausgegeben
+    }
+}
